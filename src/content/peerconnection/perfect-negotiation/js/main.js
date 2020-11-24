@@ -8,8 +8,6 @@
 
 'use strict';
 
-import peer from './peer.js';
-
 let counter = 0;
 async function run(target, cmd) {
   const id = `result${counter++}`;
@@ -20,7 +18,6 @@ async function run(target, cmd) {
     r(data[id]);
   }));
 }
-window.run = run;
 
 function startLocalVideo(r1,g1,b1, r2,g2,b2) {
   const whiteNoise = (width, height, r, g, b) => {

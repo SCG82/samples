@@ -11,7 +11,7 @@
 /**
  * "Library code" for polite and impolite peers.
  */
-export default function peer(other, polite, fail = null) {
+function peer(other, polite, fail = null) {
   const send = (tgt, msg) => tgt.postMessage(JSON.parse(JSON.stringify(msg)), "*");
   if (!fail)
     fail = e => send(window.parent, { error: `${e.name}: ${e.message}` });

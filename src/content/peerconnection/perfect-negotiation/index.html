@@ -40,21 +40,6 @@
         with the <a href="https://w3c.github.io/webrtc-pc/#perfect-negotiation-example">Perfect Negotiation</a>
         usage pattern.
     </p>
-    <p>This is a pattern of exchanging offer and answer SDP that an application can make use of to
-        abstract away when and how to do signaling. By attaching code that exercises this pattern when
-        "onnegotiationneeded" is fired, the negotiation code can be written once in isolation from the
-        rest of the application code, and whenever the application then modifies the RTCPeerConnection
-        in such a way that renegotiation is needed, the negotiation code will be exercised automatically,
-        and the changes will be made visible at both the local and remote endpoints.
-    </p>
-    <p>Changes can be made to either peer connection and this is automatically signaled to the other endpoint
-        by listening to onnegotiationneeded. If both peers are making offers at the same time (glare), the
-        impolite peer will ignore the polite peer's offer and the polite peer will set the impolite peer's offer.
-        This implicitly triggers a rollback so that the O/A exchange can complete and when the polite peer is
-        back to the stable signaling state, onnegotiationneeded will fire again for the polite peer to make
-        sure a follow-up O/A exchange is triggered. Using this pattern, the application does not have to care
-        too much about signaling, since onnegotiationneeded will be fired until it is no longer needed.
-    </p>
     <p>Perfect Negotiation supports both endpoints sending offers. The pattern intelligently handles the
         situation of "glare" (both peers making an offer at the same time, causing a collision) by having
         one peer be "polite" and the other peer be "impolite". In the event of an offer collision, the
@@ -67,9 +52,6 @@
         this will be negotiated and displayed as a remote track on the other peer's iframe.
     </p>
     <p>
-        The JavaScript console shows logs for the negotiation steps.
-    </p>
-    <p>
         <iframe id="polite"></iframe>
         <iframe id="impolite"></iframe>
     </p>
@@ -79,9 +61,9 @@
     <p>
         <button onclick="swapOnBoth(false)">Swap on both (glare): Impolite to offer first</button>
     </p>
-    <p>View the console to see logging. The <code>MediaStream</code> object <code>localStream</code>, and the <code>RTCPeerConnection</code>
-        objects <code>pc1</code> and <code>pc2</code> are in global scope, so you can inspect them in the console as
-        well.</p>
+    <p>
+        The JavaScript console shows logs for the negotiation steps.
+    </p>
 
     <p>For more information about RTCPeerConnection, see <a href="http://www.html5rocks.com/en/tutorials/webrtc/basics/"
                                                             title="HTML5 Rocks article about WebRTC by Sam Dutton">Getting

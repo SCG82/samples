@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<!--
+ *  Copyright (c) 2015 The WebRTC project authors. All Rights Reserved.
+ *
+ *  Use of this source code is governed by a BSD-style license
+ *  that can be found in the LICENSE file in the root of the source
+ *  tree.
+-->
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="description" content="WebRTC code samples">
+    <meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=1">
+    <meta itemprop="description" content="Client-side WebRTC code samples">
+    <meta itemprop="image" content="../../../images/webrtc-icon-192x192.png">
+    <meta itemprop="name" content="WebRTC code samples">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta id="theme-color" name="theme-color" content="#ffffff">
+
+    <base target="_blank">
+
+    <title>Perfect Negotiation</title>
+
+    <link rel="icon" sizes="192x192" href="../../../images/webrtc-icon-192x192.png">
+    <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="../../../css/main.css"/>
+    <link rel="stylesheet" href="css/main.css"/>
+
+</head>
+
+<body>
+
+<div id="container">
+    <h1><a href="//webrtc.github.io/samples/" title="WebRTC samples homepage">WebRTC samples</a>
+        <span>Perfect Negotiation</span></h1>
+
+    <p>This sample shows how to setup a connection between two peers using
+        <a href="https://developer.mozilla.org/en-US/docs/Web/API/RTCPeerConnection">RTCPeerConnection</a>
+        with the <a href="https://w3c.github.io/webrtc-pc/#perfect-negotiation-example">Perfect Negotiation</a>
+        usage pattern.
+    </p>
+    <p>This is a pattern of exchanging offer and answer SDP that an application can make use of to
+        abstract away when and how to do signaling. By attaching code that exercises this pattern when
+        "onnegotiationneeded" is fired, the negotiation code can be written once in isolation from the
+        rest of the application code, and whenever the application then modifies the RTCPeerConnection
+        in such a way that renegotiation is needed, the negotiation code will be exercised automatically,
+        and the changes will be made visible at both the local and remote endpoints.
+    </p>
+    <p>Changes can be made to either peer connection and this is automatically signaled to the other endpoint
+        by listening to onnegotiationneeded. If both peers are making offers at the same time (glare), the
+        impolite peer will ignore the polite peer's offer and the polite peer will set the impolite peer's offer.
+        This implicitly triggers a rollback so that the O/A exchange can complete and when the polite peer is
+        back to the stable signaling state, onnegotiationneeded will fire again for the polite peer to make
+        sure a follow-up O/A exchange is triggered. Using this pattern, the application does not have to care
+        too much about signaling, since onnegotiationneeded will be fired until it is no longer needed.
+    </p>
+    <p>Perfect Negotiation supports both endpoints sending offers. The pattern intelligently handles the
+        situation of "glare" (both peers making an offer at the same time, causing a collision) by having
+        one peer be "polite" and the other peer be "impolite". In the event of an offer collision, the
+        polite peer rolls back its offer in order to process the impolite peer's incoming offer. Once
+        back to the stable signaling state, the polite peer's "onnegotiationneeded" fires again and a
+        follow-up O/A is completed.
+    </p>
+    <p>Click both peers' Start button to create local streams.
+        Then press the Swap Sending Track button to modify which transceiver is sending;
+        this will be negotiated and displayed as a remote track on the other peer's iframe.
+    </p>
+    <p>
+        The JavaScript console shows logs for the negotiation steps.
+    </p>
+    <p>
+        <iframe id="polite"></iframe>
+        <iframe id="impolite"></iframe>
+    </p>
+    <p>
+        <button onclick="swapOnBoth(true)">Swap on both (glare): Polite to offer first</button>
+    </p>
+    <p>
+        <button onclick="swapOnBoth(false)">Swap on both (glare): Impolite to offer first</button>
+    </p>
+<!--
+    <video id="localVideo" playsinline autoplay muted></video>
+    <video id="remoteVideo" playsinline autoplay></video>
+
+    <div class="box">
+        <button id="startButton">Start</button>
+        <button id="callButton">Call</button>
+        <button id="hangupButton">Hang Up</button>
+    </div>
+
+    <div class="box">
+        <span>SDP Semantics:</span>
+        <select id="sdpSemantics">
+            <option selected value="">Default</option>
+            <option value="unified-plan">Unified Plan</option>
+            <option value="plan-b">Plan B</option>
+        </select>
+    </div>
+-->
+
+    <p>View the console to see logging. The <code>MediaStream</code> object <code>localStream</code>, and the <code>RTCPeerConnection</code>
+        objects <code>pc1</code> and <code>pc2</code> are in global scope, so you can inspect them in the console as
+        well.</p>
+
+    <p>For more information about RTCPeerConnection, see <a href="http://www.html5rocks.com/en/tutorials/webrtc/basics/"
+                                                            title="HTML5 Rocks article about WebRTC by Sam Dutton">Getting
+        Started With WebRTC</a>.</p>
+
+
+    <a href="https://github.com/webrtc/samples/tree/gh-pages/src/content/peerconnection/perfect-negotiation"
+       title="View source for this page on GitHub" id="viewSource">View source on GitHub</a>
+
+</div>
+
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="js/main.js" async></script>
+
+<script src="../../../js/lib/ga.js"></script>
+</body>
+</html>

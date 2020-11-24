@@ -72,8 +72,8 @@ async function setupIframe(el, polite, r1,g1,b1, r2,g2,b2) {
 }
 
 async function setupIframes() {
-  await setupIframe(politeIframe, 'polite', 0,1,0, 0,1,1);
-  await setupIframe(impoliteIframe, 'impolite', 1,0,0, 1,0,1);
+  await setupIframe(politeIframe, true, 0,1,0, 0,1,1);
+  await setupIframe(impoliteIframe, false, 1,0,0, 1,0,1);
 }
 setupIframes();
 
